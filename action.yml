@@ -1,5 +1,5 @@
 name: "Auto Release /w AI Summary"
-description: "GitHub Action на Deno для автоматизации релиза по коммитам"
+description: "Advanced GitHub Action for automated releases with AI-powered changelog generation"
 author: "Shiro-nn"
 
 inputs:

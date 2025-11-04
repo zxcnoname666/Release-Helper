@@ -1,43 +1,43 @@
 name: Build bundle
+
 on:
-  push
+  push:
+    branches: [main, master]
+    paths:
+      - 'src/**'
+      - 'package.json'
+      - 'build.mjs'
+      - 'tsconfig.json'
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  build:
+  bundle:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref || github.ref }}
+          fetch-depth: 0
 
-      - name: Set up Deno
-        uses: denoland/setup-deno@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          deno-version: vx.x
+          node-version: '20'
+          cache: 'npm'
 
-      - name: Recreate dist
-        shell: bash
-        run: rm -rf ./dist
-
-      - name: Formate
-        shell: bash
-        run: deno fmt --ignore=.github
+      - name: Install dependencies
+        run: npm ci
 
       - name: Build bundle
-        shell: bash
-        run: deno run --allow-env --allow-read --allow-run --allow-write --allow-net bundle.ts
+        run: npm run build
 
-      - name: Commit and Push Changes
-        continue-on-error: true
+      - name: Commit bundle
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add . # Добавить все изменения форматирования
-          git commit -m "auto: build bundle file [skip ci]" # Создать НОВЫЙ коммит
-          # [skip ci] в сообщении коммита часто используется, чтобы предотвратить запуск этого же workflow снова
-          git push origin HEAD:${{ github.head_ref || github.ref_name }} # Пуш в ту же ветку, откуда пришел триггер
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f dist/out.js
+          git diff --staged --quiet || git commit -m "auto: build bundle file [skip ci]"
+          git push
