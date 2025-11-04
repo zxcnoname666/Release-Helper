@@ -1,0 +1,41 @@
+{
+  "name": "@zxcnoname666/release-helper",
+  "version": "2.0.0",
+  "description": "Advanced GitHub Action for automated releases with AI-powered changelog generation",
+  "main": "dist/out.js",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node --watch src/index.ts",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "github-action",
+    "release",
+    "changelog",
+    "ai",
+    "automation",
+    "semver",
+    "typescript"
+  ],
+  "author": "zxcnoname666",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.10.1",
+    "@actions/exec": "^1.1.1",
+    "@actions/github": "^6.0.0",
+    "semver": "^7.6.3",
+    "glob": "^11.0.0",
+    "mime-types": "^2.1.35"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.6",
+    "@types/semver": "^7.5.8",
+    "@types/mime-types": "^2.1.4",
+    "esbuild": "^0.24.0",
+    "typescript": "^5.6.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

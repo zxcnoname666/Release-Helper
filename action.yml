@@ -1,6 +1,6 @@
 name: "Auto Release /w AI Summary"
-description: "GitHub Action на Deno для автоматизации релиза по коммитам"
-author: "Shiro-nn"
+description: "Advanced GitHub Action for automated releases with AI-powered changelog generation"
+author: "zxcnoname666"
 
 inputs:
   GITHUB_TOKEN:
