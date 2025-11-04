@@ -254,7 +254,6 @@ We recognize security researchers who help improve Release Helper's security:
 
 **Security Team:**
 - GitHub: [@zxcnoname666](https://github.com/zxcnoname666)
-- Email: [your-email@example.com]
 
 **For general questions:** Open a [Discussion](https://github.com/zxcnoname666/release-helper/discussions)
 
