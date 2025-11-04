@@ -1,7 +1,7 @@
 name: Release
 on:
   push:
-    branches: [master]
+    branches: [main]
     
 permissions:
   contents: write
@@ -18,4 +18,3 @@ jobs:
         uses: zxcnoname666/release-helper@master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ALLOWED_BRANCH: master
