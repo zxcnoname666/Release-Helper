@@ -1,0 +1,20 @@
+name: Release
+on:
+  push:
+    branches: [main]
+    
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Auto Release
+        uses: zxcnoname666/release-helper@master
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
