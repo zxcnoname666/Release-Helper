@@ -48,12 +48,27 @@ export async function generateAIChangelog(
     const response = await callOpenAI(messages, config);
     info(`AI response length: ${response.length} chars`);
 
+    // Check if response is empty or too short
+    if (!response || response.trim().length === 0) {
+      warning(`AI returned empty response at iteration ${iteration}`);
+      if (iteration > 1) {
+        // If we already used tools, prompt for the final response
+        messages.push({
+          role: 'user',
+          content: 'Please provide the complete changelog now based on the tool results you received.',
+        });
+        continue;
+      } else {
+        throw new Error('AI returned empty response on first iteration');
+      }
+    }
+
     const toolRequests = parseToolRequests(response);
 
     // If no tool requests, we have the final response
     if (toolRequests.length === 0) {
       info('No tool requests found, treating as final response');
-      finalResponse = response;
+      finalResponse = response.trim();
       break;
     }
 
@@ -80,7 +95,7 @@ export async function generateAIChangelog(
     // Add tool results to conversation
     messages.push(
       { role: 'assistant', content: response },
-      { role: 'user', content: `Tool results:\n\n${toolResults.join('\n\n---\n\n')}` }
+      { role: 'user', content: `Tool results:\n\n${toolResults.join('\n\n---\n\n')}\n\nNow generate the complete changelog based on these results.` }
     );
   }
 
@@ -143,8 +158,8 @@ function cleanupResponse(response: string): string {
   // Remove thinking blocks
   let cleaned = response.replace(/<think>[\s\S]*?<\/think>/g, '');
 
-  // Remove tool request blocks
-  cleaned = cleaned.replace(/```json\s*\{[\s\S]*?\}\s*```/g, '');
+  // Remove tool request blocks (only those with "tool" and "arguments" fields)
+  cleaned = cleaned.replace(/```json\s*(\[[\s\S]*?"tool"[\s\S]*?\]|\{[\s\S]*?"tool"[\s\S]*?\})\s*```/g, '');
 
   // Remove multiple consecutive newlines
   cleaned = cleaned.replace(/\n{3,}/g, '\n\n');
