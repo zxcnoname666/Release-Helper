@@ -1,6 +1,6 @@
 name: "Auto Release /w AI Summary"
 description: "Advanced GitHub Action for automated releases with AI-powered changelog generation"
-author: "Shiro-nn"
+author: "zxcnoname666"
 
 inputs:
   GITHUB_TOKEN:

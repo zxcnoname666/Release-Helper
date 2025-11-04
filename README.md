@@ -3,67 +3,29 @@
 <p align="center">
   <img src="https://img.shields.io/badge/node-20%2B-brightgreen?logo=node.js&style=for-the-badge" alt="Node.js" />
   <img src="https://img.shields.io/badge/typescript-5.6-blue?logo=typescript&style=for-the-badge" alt="TypeScript" />
-  <img src="https://img.shields.io/github/v/release/Shiro-nn/release-helper?label=latest&style=for-the-badge" alt="Latest Release" />
-  <img src="https://img.shields.io/github/actions/workflow/status/Shiro-nn/release-helper/bundle.yml?style=for-the-badge" alt="CI" />
+  <img src="https://img.shields.io/github/v/release/zxcnoname666/release-helper?label=latest&style=for-the-badge" alt="Latest Release" />
+  <img src="https://img.shields.io/github/actions/workflow/status/zxcnoname666/release-helper/bundle.yml?style=for-the-badge" alt="CI" />
 </p>
 
 ---
 
-## ✨ Overview
+## Overview
 
-**Auto Release** is an advanced GitHub Action that revolutionizes release automation with:
+Advanced GitHub Action for automated release management with AI-powered changelog generation. Streamlines version bumping, changelog creation, and release publishing with intelligent commit analysis.
 
-- 🤖 **AI-Powered Changelog Generation** - Uses OpenAI with intelligent tools to analyze commits and generate comprehensive release notes
-- 🧠 **Smart Commit Analysis** - Parses Conventional Commits and extracts multiple change types from single commits
-- 📊 **Rich Release Statistics** - Tracks files changed, additions, deletions, contributors, and time since last release
-- 🔧 **Built-in Tools for AI** - Provides AI with tools to inspect diffs, analyze impact, and understand changes deeply
-- ⚡ **Fast & Efficient** - Built with Node.js, TypeScript, and esbuild for optimal performance
+### Key Features
+
+- 🤖 **AI-Powered Changelogs** - Generates comprehensive release notes using OpenAI with context-aware tools
+- 📊 **Rich Statistics** - Tracks files changed, line changes, contributors, and time metrics
+- 🧠 **Smart Commit Parsing** - Extracts multiple conventional commit types from single commits
+- 🔧 **AI Tools System** - Provides AI with tools to inspect diffs, analyze impact, and understand changes
 - 🎯 **SemVer Automation** - Automatic version bumping based on commit messages
+- ⚡ **Fast Build** - Built with TypeScript and esbuild for optimal performance
+- 🔔 **Discord Notifications** - Rich embeds with release information
 
 ---
 
-## 🎯 What's New in v2.0
-
-### 🔥 Major Improvements
-
-1. **Complete Rewrite on Node.js + TypeScript**
-   - Migrated from Deno to Node.js for better ecosystem compatibility
-   - Full TypeScript support with strict type checking
-   - Modular architecture with separated concerns
-
-2. **Advanced AI Tools System**
-   - `get_commit_details` - Get comprehensive commit information
-   - `get_commit_diff` - View changes with automatic truncation for large diffs
-   - `get_changed_files` - List all files modified in a commit
-   - `get_commits_by_type` - Filter commits by conventional type
-   - `analyze_commit_impact` - Assess the scope and impact of changes
-
-3. **Enhanced Changelog Generation**
-   - AI can now request additional information before generating changelog
-   - Multi-iteration tool use for better context understanding
-   - Automatic categorization with emoji headers
-   - Breaking change detection and highlighting
-
-4. **Rich Statistics**
-   - Files changed count
-   - Lines added/deleted
-   - Days since last release
-   - Contributor list
-   - Commit count
-
-5. **Smart Commit Parsing**
-   - Handles multiple conventional commit types in one commit
-   - Example: `feat: add feature\n\nchore: update deps` → 2 separate changes
-   - Only uses first line of each type (excludes descriptions)
-
-6. **Better Performance**
-   - esbuild for fast bundling
-   - Optimized Git operations
-   - Efficient token usage with smart truncation
-
----
-
-## 📥 Installation
+## Installation
 
 Add this action to your workflow:
 
@@ -86,40 +48,40 @@ jobs:
           fetch-depth: 0
 
       - name: Auto Release
-        uses: Shiro-nn/release-helper@v2
+        uses: zxcnoname666/release-helper@main
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          BUILD_COMMAND: "npm run build"
-          LINT_AND_TESTS_COMMAND: "npm test"
+          BUILD_COMMAND: "pnpm run build"
+          LINT_AND_TESTS_COMMAND: "pnpm test"
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
 ```
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 | Parameter | Required | Default | Description |
 |-----------|----------|---------|-------------|
 | `GITHUB_TOKEN` | ✅ | - | GitHub token for creating releases and tags |
 | `OPENAI_API_KEY` | ❌ | - | OpenAI API key for AI-powered changelog generation |
-| `OPENAI_API_MODEL` | ❌ | `gpt-4` | OpenAI model to use |
-| `OPENAI_API_BASE_URL` | ❌ | `https://api.openai.com/v1` | OpenAI API endpoint |
-| `BUILD_COMMAND` | ❌ | - | Command to build your project |
-| `LINT_AND_TESTS_COMMAND` | ❌ | - | Command to run linting and tests |
-| `ASSET_PATTERNS` | ❌ | - | Glob patterns for release assets (e.g., `dist/**/*.zip`) |
+| `OPENAI_API_MODEL` | ❌ | `gpt-4` | OpenAI model to use (gpt-4, gpt-4-turbo, gpt-3.5-turbo) |
+| `OPENAI_API_BASE_URL` | ❌ | `https://api.openai.com/v1` | OpenAI API endpoint (supports custom endpoints) |
+| `BUILD_COMMAND` | ❌ | - | Command to build your project before release |
+| `LINT_AND_TESTS_COMMAND` | ❌ | - | Command to run linting and tests before release |
+| `ASSET_PATTERNS` | ❌ | - | Glob patterns for release assets (e.g., `dist/**/*.zip dist/**/*.tar.gz`) |
 | `ALLOWED_BRANCH` | ❌ | `main` | Branch allowed for releases |
 | `DRAFT_RELEASE` | ❌ | `false` | Create as draft release |
 | `PRERELEASE` | ❌ | `false` | Mark as pre-release |
-| `DISCORD_WEBHOOK` | ❌ | - | Discord webhook URL for notifications |
+| `DISCORD_WEBHOOK` | ❌ | - | Discord webhook URL for release notifications |
 
 ---
 
-## 🚀 Usage
+## Usage
 
-### Triggering a Release
+### Triggering Releases
 
-Add a release command to your commit message:
+Add a release command to your commit message to trigger a release:
 
 ```bash
 # Patch release (0.0.x)
@@ -138,7 +100,24 @@ git commit -m "feat!: breaking change
 !release: major"
 ```
 
-### Example Commit for Multiple Changes
+### Conventional Commits
+
+The action follows [Conventional Commits](https://www.conventionalcommits.org/) specification:
+
+- `feat:` - New features
+- `fix:` - Bug fixes
+- `docs:` - Documentation changes
+- `chore:` - Maintenance tasks
+- `refactor:` - Code refactoring
+- `style:` - Code style changes
+- `perf:` - Performance improvements
+- `test:` - Test updates
+- `build:` - Build system changes
+- `ci:` - CI configuration changes
+
+### Multiple Changes in One Commit
+
+You can include multiple conventional commit types in a single commit. Each type will be parsed as a separate change in the changelog:
 
 ```bash
 git commit -m "feat: add user authentication
@@ -148,57 +127,70 @@ docs: improve README
 !release: minor"
 ```
 
-This will be parsed as 3 separate changes in the changelog:
-- ✨ Features: add user authentication
-- 🔧 Chores: update dependencies
-- 📝 Documentation: improve README
+This generates:
+- ✨ **Features**: add user authentication
+- 🔧 **Chores**: update dependencies
+- 📝 **Documentation**: improve README
 
 ---
 
-## 🧠 How AI Tools Work
+## AI Tools System
 
-When AI generates the changelog, it has access to these tools:
+When generating changelogs, the AI has access to specialized tools for deeper analysis:
+
+### Available Tools
+
+- **get_commit_details** - Get comprehensive commit information including stats and parsed types
+- **get_commit_diff** - View file changes with automatic truncation for large diffs
+- **get_changed_files** - List all files modified in a commit grouped by directory
+- **get_commits_by_type** - Filter commits by conventional type (feat, fix, etc.)
+- **analyze_commit_impact** - Assess the scope and impact of changes (minor/moderate/major)
+
+### How It Works
+
+The AI can request additional context before generating the changelog:
 
 ```typescript
-// Example: AI can request commit details
+// Example: AI requests commit details
 {
   "tool": "get_commit_details",
   "arguments": { "sha": "abc123" }
 }
 
-// Response includes:
-// - Full commit message
-// - Author info
-// - Change statistics
-// - Parsed change types
+// Response includes full context:
+// - Complete commit message
+// - Author information
+// - Change statistics (+additions/-deletions)
+// - Parsed conventional commit types
 // - Breaking change indicators
 ```
 
-The AI can:
-1. Analyze commit impact before writing
-2. Request diffs for unclear changes
-3. Group related changes intelligently
-4. Highlight important changes
-5. Explain breaking changes clearly
+This allows the AI to:
+1. Understand the full context of changes
+2. Group related commits intelligently
+3. Highlight important changes
+4. Explain breaking changes with migration notes
+5. Generate more accurate and helpful release notes
 
 ---
 
-## 📊 Example Release Output
+## Release Output
+
+Generated releases include:
+
+### Changelog Structure
 
 ```markdown
 ## What's Changed
 
-This release focuses on improving performance and adding new features.
+Brief summary highlighting key changes.
 
 ### ✨ Features
 - **auth**: add OAuth2 support [`a1b2c3d`] by @username
 - **api**: implement rate limiting [`e4f5g6h`] by @contributor
 
 ### 🐛 Bug Fixes
-- **core**: fix memory leak in event loop [`i7j8k9l`] by @developer
-
-### 📝 Documentation
-- **readme**: add API examples [`m0n1o2p`] by @writer
+- **core**: fix memory leak [`i7j8k9l`] by @developer
 
 ---
 
@@ -208,56 +200,74 @@ This release focuses on improving performance and adding new features.
 Files changed: 24 | Additions: 342 | Deletions: 156 | Days since last release: 7
 Contributors: 4 | Commits: 15
 ```
+
+**Full changes**: https://github.com/owner/repo/compare/1.0.0...1.1.0
 ```
+
+### Discord Notifications
+
+Rich embeds with:
+- Release version and type
+- Commit count and contributors
+- Files changed
+- Breaking change warnings
+- Direct link to release
 
 ---
 
-## 🎨 Architecture
+## Architecture
 
 ```
 src/
-├── index.ts          # Main entry point
+├── index.ts          # Main entry point and orchestration
 ├── types.ts          # TypeScript type definitions
-├── version.ts        # Version management & semver
-├── git.ts            # Git operations
-├── commits.ts        # Commit parsing & analysis
+├── version.ts        # Version management and semver operations
+├── git.ts            # Git operations (commits, diffs, stats)
+├── commits.ts        # Commit parsing and conventional commits
 ├── github.ts         # GitHub API integration
-├── ai.ts             # AI integration
-├── ai-tools.ts       # Tool definitions for AI
-├── prompts.ts        # System & user prompts
+├── ai.ts             # AI integration and changelog generation
+├── ai-tools.ts       # Tool definitions and execution for AI
+├── prompts.ts        # System and user prompts for AI
 └── utils.ts          # Utility functions
 ```
 
+Built with:
+- **Node.js 20+** - Modern JavaScript runtime
+- **TypeScript 5.6** - Type-safe development
+- **esbuild** - Fast bundling (~180ms)
+- **Conventional Commits** - Structured commit parsing
+- **OpenAI API** - AI-powered content generation
+
 ---
 
-## 🔧 Development
+## Development
 
 ```bash
 # Install dependencies
-npm install
+pnpm install
 
 # Build
-npm run build
+pnpm run build
 
 # Type check
-npm run type-check
+pnpm run type-check
 ```
 
 ---
 
-## 📄 License
+## Related Projects
+
+| Project | Description |
+|---------|-------------|
+| [**AI Commit Fixer**](https://github.com/zxcnoname666/ai-commit-fixer) | Automatically fix commit messages using AI |
+| [**AI Code Reviewer**](https://github.com/zxcnoname666/ai-code-reviewer) | Automated PR reviews with AI recommendations |
+
+---
+
+## License
 
 MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-## 🔗 Related Actions
-
-| Action | Description |
-|--------|-------------|
-| [**AI Commit Fixer**](https://github.com/Shiro-nn/ai-commit-fixer) | 🛠️ Automatically fix commit messages using AI |
-| [**AI Code Reviewer**](https://github.com/Shiro-nn/ai-code-reviewer) | 👀 Automated PR reviews with AI recommendations |
-
----
-
-<p align="center">Made with ❤️ by <a href="https://github.com/Shiro-nn">Shiro-nn</a></p>
+<p align="center">Made with ❤️ by <a href="https://github.com/zxcnoname666">zxcnoname666</a></p>

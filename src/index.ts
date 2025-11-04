@@ -148,7 +148,7 @@ async function run(): Promise<void> {
     let changelog = await generateChangelog(aiContext, aiConfig);
 
     // Add statistics section
-    changelog += '\n\n' + generateStatsSection(stats, versionInfo.current);
+    changelog += '\n\n' + generateStatsSection(stats, versionInfo, { owner, repo });
 
     // ====== 10. Create release ======
     info('Creating GitHub release...');

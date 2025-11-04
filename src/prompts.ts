@@ -73,6 +73,7 @@ ${versionInfo.previous ? `- **Previous version**: ${versionInfo.previous}` : '- 
 ## Repository
 - **Owner**: ${repository.owner}
 - **Repo**: ${repository.repo}
+${versionInfo.previous ? `- **Full changes**: https://github.com/${repository.owner}/${repository.repo}/compare/${versionInfo.previous}...${versionInfo.current}` : ''}
 
 ## Statistics
 - **Commits**: ${stats.commitCount}
@@ -104,8 +105,14 @@ The changelog should be in markdown format and ready to be published as a GitHub
 /**
  * Generate statistics section for release notes
  */
-export function generateStatsSection(stats: ReleaseStats, version: string): string {
-  const prevVersion = version.split('.').slice(0, -1).join('.') + '.0'; // Rough estimate
+export function generateStatsSection(
+  stats: ReleaseStats,
+  versionInfo: { previous?: string; current: string },
+  repository: { owner: string; repo: string }
+): string {
+  const compareLink = versionInfo.previous
+    ? `\n\n**Full changes**: https://github.com/${repository.owner}/${repository.repo}/compare/${versionInfo.previous}...${versionInfo.current}`
+    : '';
 
   return `
 ---
@@ -115,7 +122,7 @@ export function generateStatsSection(stats: ReleaseStats, version: string): stri
 \`\`\`
 Files changed: ${stats.filesChanged} | Additions: ${stats.additions} | Deletions: ${stats.deletions}${stats.daysSinceLastRelease !== null ? ` | Days since last release: ${stats.daysSinceLastRelease}` : ''}
 Contributors: ${stats.contributors.length} | Commits: ${stats.commitCount}
-\`\`\`
+\`\`\`${compareLink}
 `.trim();
 }
 
@@ -125,7 +132,8 @@ Contributors: ${stats.contributors.length} | Commits: ${stats.commitCount}
 export function formatSimpleChangelog(
   commits: ParsedCommit[],
   stats: ReleaseStats,
-  version: string
+  versionInfo: { previous?: string; current: string },
+  repository: { owner: string; repo: string }
 ): string {
   const grouped = groupCommitsByType(commits);
   const types = sortCommitTypes(Array.from(grouped.keys()));
@@ -143,7 +151,7 @@ export function formatSimpleChangelog(
     changelog += '\n';
   }
 
-  changelog += generateStatsSection(stats, version);
+  changelog += generateStatsSection(stats, versionInfo, repository);
 
   return changelog;
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@shiro-nn/release-helper",
+  "name": "@zxcnoname666/release-helper",
   "version": "2.0.0",
   "description": "Advanced GitHub Action for automated releases with AI-powered changelog generation",
   "main": "dist/out.js",
@@ -18,7 +18,7 @@
     "semver",
     "typescript"
   ],
-  "author": "Shiro-nn",
+  "author": "zxcnoname666",
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.10.1",
