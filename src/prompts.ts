@@ -34,7 +34,7 @@ DO NOT skip step 1. The basic commit info provided is insufficient - you MUST us
 For each category (feat, fix, ci, etc.):
 1. **Identify semantic blocks** - Group related commits that accomplish one logical change
 2. **Write block description** - Explain what was achieved, challenges faced, solutions found
-3. **List commits in block** - Show which commits are part of this logical change
+3. **List commits in block** - JUST list them, NO individual descriptions
 
 ### Example Structure:
 
@@ -56,14 +56,6 @@ Key improvements:
 - refactor: migrate session storage to Redis [c3d4e5f] by @mary
 - fix: resolve token race condition [d4e5f6g] by @john
 
-### User Profile Enhancements
-
-Added ability for users to customize their profiles...
-
-**Related commits:**
-- feat: add profile photo upload [e5f6g7h] by @bob
-- feat: add bio field [f6g7h8i] by @alice
-
 ## 🐛 Bug Fixes
 
 ### Critical Memory Leak Resolution
@@ -73,24 +65,59 @@ We discovered a memory leak in the WebSocket handler that caused server crashes 
 **Related commits:**
 - fix: cleanup WebSocket listeners on disconnect [g7h8i9j] by @eve
 - fix: add memory monitoring alerts [h8i9j0k] by @eve
+
+## 👷 CI
+
+### CI/CD Pipeline Improvements
+
+We improved the CI/CD pipeline by adding Docker support and Kubernetes deployment. The main challenge was creating a working Dockerfile - first had issues with the base image, then with dependencies, then with the COPY instruction. Eventually solved it using multi-stage builds.
+
+**Related commits:**
+- ci: add Dockerfile [abc123] by @dev1
+- ci: fix Docker build issues [def456] by @dev1
+- ci: add Kubernetes manifests [ghi789] by @dev2
+```
+
+### CRITICAL - Commit List Format:
+
+**WRONG ❌** (describing each commit individually):
+```markdown
+**Related commits:**
+- feat: add OAuth2 [abc] by @john
+  - This commit added OAuth2 support...
+- feat: add JWT [def] by @john
+  - This commit implemented JWT validation...
+```
+
+**CORRECT ✅** (just listing commits):
+```markdown
+**Related commits:**
+- feat: add OAuth2 provider support [abc] by @john
+- feat: implement JWT token validation [def] by @john
 ```
 
 ### Guidelines:
 1. **Think semantically** - "What was actually accomplished?" not just "What's the commit type?"
-2. **Tell the story** - Explain the problem, approach, and solution
+2. **Tell the story** - Explain the problem, approach, and solution IN THE BLOCK DESCRIPTION
 3. **Be technical but accessible** - Include details but explain why they matter
 4. **Group intelligently** - Related commits go together even if slightly different types
 5. **Preserve commit info** - Always list commits with exact format: "subject [hash] by @author"
+6. **NO individual commit descriptions** - Only block description + commit list
 
 ### What NOT to do:
+❌ Describe each commit individually under the commit line
+❌ Add bullet points explaining what each commit does
+❌ Write "This commit..." for individual commits
 ❌ Just list commits one by one without context
 ❌ Group only by commit type (feat, fix) without semantic grouping
 ❌ Write generic descriptions like "Various improvements"
 ❌ Omit the challenges and solutions
 
 ### What TO do:
+✅ Write ONE description for the semantic block
+✅ List all related commits without individual descriptions
 ✅ Group by what was actually built/fixed
-✅ Explain the "why" and "how"
+✅ Explain the "why" and "how" in block description
 ✅ Include technical details and metrics when relevant
 ✅ Show the commits that contributed to each semantic block
 
@@ -176,7 +203,7 @@ For each category (Features, Bug Fixes, etc.):
 
 1. **Create semantic blocks** - Group related commits
 2. **Write block description** - Explain what was accomplished, why, and how
-3. **List related commits** - Show commits in format: "subject [hash] by @author"
+3. **List related commits** - JUST list them, NO descriptions under each commit
 
 ### Required Structure:
 
@@ -191,13 +218,6 @@ For each category (Features, Bug Fixes, etc.):
 - commit subject [hash] by @author
 - commit subject [hash] by @author
 
-### [Another Semantic Block]
-
-[Description...]
-
-**Related commits:**
-- commit subject [hash] by @author
-
 ## 🐛 Bug Fixes
 
 ### [Bug Description and Resolution]
@@ -208,13 +228,36 @@ For each category (Features, Bug Fixes, etc.):
 - commit subject [hash] by @author
 \`\`\`
 
+### CRITICAL - NO Individual Commit Descriptions!
+
+**WRONG ❌** (describing each commit):
+\`\`\`markdown
+**Related commits:**
+- test [1b1a58a] by @user
+  - This commit did something...
+- fix [2c3d4e5] by @user
+  - This commit fixed something...
+\`\`\`
+
+**CORRECT ✅** (just listing):
+\`\`\`markdown
+**Related commits:**
+- test [1b1a58a] by @user
+- fix: resolve issue [2c3d4e5] by @user
+\`\`\`
+
 ### Key Requirements:
 
 ✅ **DO**: Group by semantic meaning (what was accomplished)
-✅ **DO**: Explain challenges, approaches, and solutions
+✅ **DO**: Write ONE description for the entire block
+✅ **DO**: Explain challenges, approaches, and solutions in block description
 ✅ **DO**: Use technical details and metrics when relevant
 ✅ **DO**: Keep commits in exact format: "subject [hash] by @author"
+✅ **DO**: List commits as simple flat list
 
+❌ **DON'T**: Describe each commit individually
+❌ **DON'T**: Add sub-bullets under commits explaining them
+❌ **DON'T**: Write "This commit..." for each commit
 ❌ **DON'T**: List commits one by one without grouping
 ❌ **DON'T**: Group only by commit type without semantic analysis
 ❌ **DON'T**: Write generic descriptions
@@ -222,11 +265,32 @@ For each category (Features, Bug Fixes, etc.):
 
 ### Examples of Good Semantic Blocks:
 
-**Good ✅**: "CI/CD Pipeline Modernization - We migrated from Travis CI to GitHub Actions, reducing build time from 15 to 5 minutes. The main challenge was handling matrix builds for multiple Node versions..."
+**Good ✅**:
+\`\`\`markdown
+### CI/CD Pipeline Modernization
 
-**Bad ❌**: "Various CI improvements" + flat commit list
+We migrated from Travis CI to GitHub Actions, reducing build time from 15 to 5 minutes.
+The main challenge was handling matrix builds for multiple Node versions. Solved by using
+GitHub's matrix strategy with caching.
 
-The changelog should tell the story of what was built/fixed, not just list commits.
+**Related commits:**
+- ci: migrate to GitHub Actions [abc123] by @dev1
+- ci: add matrix build support [def456] by @dev1
+- ci: implement caching [ghi789] by @dev2
+\`\`\`
+
+**Bad ❌**:
+\`\`\`markdown
+### Various CI improvements
+
+**Related commits:**
+- ci: migrate to GitHub Actions [abc123] by @dev1
+  - This commit migrated from Travis...
+- ci: add matrix build support [def456] by @dev1
+  - This commit added matrix builds...
+\`\`\`
+
+The changelog should tell the story of what was built/fixed, not describe each commit separately.
 
 ${language !== 'en' ? `
 ## IMPORTANT: Translation Required
