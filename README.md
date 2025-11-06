@@ -37,7 +37,7 @@ Perfect for developers seeking automated release workflows, AI-generated changel
 ## ✨ Key Features
 
 ### 🤖 AI-Powered Changelog Generation
-Leverage **OpenAI GPT-4** to automatically generate intelligent, context-aware release notes. The AI analyzes commit messages, code diffs, and project context to create comprehensive changelogs that explain what changed and why.
+Leverage **OpenAI GPT-5** to automatically generate intelligent, context-aware release notes. The AI analyzes commit messages, code diffs, and project context to create comprehensive changelogs that explain what changed and why.
 
 ### 📊 Comprehensive Release Statistics
 Track detailed metrics for every release:
@@ -164,7 +164,7 @@ The action will automatically:
 | Parameter | Default | Description |
 |-----------|---------|-------------|
 | `OPENAI_API_KEY` | - | OpenAI API key for AI changelogs *(optional)* |
-| `OPENAI_API_MODEL` | `gpt-4` | Model: `gpt-4`, `gpt-4-turbo`, `gpt-3.5-turbo` |
+| `OPENAI_API_MODEL` | `gpt-4` | Model: `gpt-5`, `gpt-4`, `o3`, or custom |
 | `OPENAI_API_BASE_URL` | `https://api.openai.com/v1` | Custom endpoint support |
 | `LANGUAGE` | `en` | Changelog language: `en`, `ru`, `es`, `de`, etc. |
 
@@ -205,7 +205,7 @@ The action will automatically:
   with:
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-    OPENAI_API_MODEL: gpt-4-turbo
+    OPENAI_API_MODEL: gpt-5
     LANGUAGE: en  # Changelog language (en, ru, es, de, etc.)
     BUILD_COMMAND: "npm run build"
     LINT_AND_TESTS_COMMAND: "npm test && npm run lint"
