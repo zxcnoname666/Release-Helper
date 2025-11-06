@@ -27,7 +27,7 @@ async function run(): Promise<void> {
     const config: ReviewConfig = {
       githubToken: getInput('GITHUB_TOKEN', { required: true }),
       openaiApiKey: getInput('OPENAI_API_KEY'),
-      openaiApiModel: getInput('OPENAI_API_MODEL') || 'gpt-4',
+      openaiApiModel: getInput('OPENAI_API_MODEL') || 'gpt-5',
       openaiApiBaseUrl: getInput('OPENAI_API_BASE_URL') || 'https://api.openai.com/v1',
       reviewLanguage: getInput('REVIEW_LANGUAGE') || 'en',
       silentMode: getInput('SILENT_MODE') === 'true',

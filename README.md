@@ -10,7 +10,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![Node](https://img.shields.io/badge/node-%3E%3D20-brightgreen?style=flat-square)](https://nodejs.org)
-[![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4-412991?style=flat-square&logo=openai)](https://openai.com/)
+[![OpenAI](https://img.shields.io/badge/OpenAI-GPT--5-412991?style=flat-square&logo=openai)](https://openai.com/)
 
 [Quick Start](#-quick-start) • [Features](#-features) • [Configuration](#-configuration) • [Examples](#-example-output) • [Development](#-development)
 
@@ -20,7 +20,7 @@
 
 ## 📋 Overview
 
-**AI Code Review** is a next-generation GitHub Action that transforms pull request reviews through **advanced AI analysis** and **deep code understanding**. Powered by OpenAI GPT-4, it provides senior-level code reviews with AST parsing, linter integration, dependency tracking, and stunning visual statistics.
+**AI Code Review** is a next-generation GitHub Action that transforms pull request reviews through **advanced AI analysis** and **deep code understanding**. Powered by OpenAI GPT-5, it provides senior-level code reviews with AST parsing, linter integration, dependency tracking, and stunning visual statistics.
 
 ### 🎯 Why AI Code Review?
 
@@ -37,7 +37,7 @@
 
 ### 🧠 **AI-Powered Intelligence**
 
-- **GPT-4 Integration**: Context-aware, comprehensive code reviews
+- **GPT-5 Integration**: Context-aware, comprehensive code reviews
 - **Tool Calling System**: AI uses 10+ analysis tools to investigate code
 - **Multi-Language Support**: Review comments in any language
 - **Senior-Level Feedback**: Explains the "why" behind suggestions
@@ -45,10 +45,12 @@
 ### 🔍 **Advanced Code Analysis**
 
 - **AST Parsing**: Extract functions, classes, dependencies from code
-- **Linter Integration**: Auto-runs ESLint, Pylint, and more
+- **Linter Integration**: Auto-runs ESLint, Pylint, Rust Clippy, C# Analyzers, and custom linters
+- **Custom Linter Support**: Integrate any linter with simple configuration
 - **Dependency Tracking**: Maps function calls and dependencies
 - **Complexity Metrics**: Cyclomatic complexity, maintainability index
 - **Call Graph Analysis**: Understand function relationships and impact
+- **Multi-Language**: TypeScript, JavaScript, Python, Rust, C#, and more
 
 ### 📊 **Beautiful Statistics**
 
@@ -119,7 +121,7 @@ jobs:
   with:
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-    OPENAI_API_MODEL: 'gpt-4-turbo'
+    OPENAI_API_MODEL: 'gpt-5-turbo'
     REVIEW_LANGUAGE: 'ru'      # Review in Russian
     SILENT_MODE: 'true'        # Reduce notifications
     ENABLE_AST: 'true'         # Deep code analysis
@@ -142,7 +144,7 @@ jobs:
 | Input | Description | Default |
 |-------|-------------|---------|
 | `OPENAI_API_KEY` | OpenAI API key | - |
-| `OPENAI_API_MODEL` | Model (`gpt-4`, `gpt-4-turbo`, `gpt-3.5-turbo`) | `gpt-4` |
+| `OPENAI_API_MODEL` | Model (`gpt-5`, `gpt-5-turbo`, `gpt-4-turbo`) | `gpt-5` |
 | `OPENAI_API_BASE_URL` | Custom endpoint (Azure, etc.) | `https://api.openai.com/v1` |
 | `REVIEW_LANGUAGE` | Review language (`en`, `ru`, `es`, `fr`, etc.) | `en` |
 | `SILENT_MODE` | Minimize notifications | `false` |
@@ -247,6 +249,40 @@ Info      ░░░░░░░░░░░░░░░░░░░░░░░�
 
 ## 🌟 Advanced Use Cases
 
+### Custom Linter Integration
+
+Integrate your own linters programmatically:
+
+```typescript
+import { registerCustomLinter } from '@zxcnoname666/ai-code-review';
+
+// Example: Register a custom Go linter
+registerCustomLinter('golangci-lint', {
+  command: 'golangci-lint',
+  args: ['run', '--out-format=json', '{file}'],
+  filePattern: '\\.go$',
+  outputFormat: 'json',
+  parser: (output) => {
+    const result = JSON.parse(output);
+    return result.Issues.map(issue => ({
+      file: issue.Pos.Filename,
+      line: issue.Pos.Line,
+      column: issue.Pos.Column,
+      severity: issue.Severity === 'error' ? 'error' : 'warning',
+      message: issue.Text,
+      ruleId: issue.FromLinter,
+    }));
+  },
+});
+```
+
+**Supported Built-in Linters:**
+- **JavaScript/TypeScript**: ESLint
+- **Python**: Pylint
+- **Rust**: Clippy
+- **C#**: dotnet format analyzers
+- **Custom**: Any linter you configure!
+
 ### Custom OpenAI Endpoint (Azure)
 
 ```yaml
@@ -275,7 +311,7 @@ Info      ░░░░░░░░░░░░░░░░░░░░░░░�
   with:
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-    OPENAI_API_MODEL: 'gpt-4-turbo'
+    OPENAI_API_MODEL: 'gpt-5-turbo'
     MAX_CHUNK_SIZE: '12000'
     SILENT_MODE: 'true'
 ```
@@ -336,10 +372,12 @@ MIT License - see [LICENSE](LICENSE)
 
 ## 🙏 Acknowledgments
 
-- [OpenAI GPT-4](https://openai.com)
+- [OpenAI GPT-5](https://openai.com) - Advanced AI model
 - [GitHub Actions](https://github.com/features/actions)
 - [@babel/parser](https://babeljs.io/docs/en/babel-parser)
 - [@typescript-eslint/parser](https://typescript-eslint.io)
+- [Rust Clippy](https://github.com/rust-lang/rust-clippy)
+- [.NET Roslyn Analyzers](https://github.com/dotnet/roslyn-analyzers)
 
 ---
 

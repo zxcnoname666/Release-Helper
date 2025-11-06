@@ -41,7 +41,7 @@ export async function performAIReview(
 
   const aiConfig: OpenAIConfig = {
     apiKey: config.openaiApiKey,
-    model: config.openaiApiModel || 'gpt-4',
+    model: config.openaiApiModel || 'gpt-5',
     baseUrl: config.openaiApiBaseUrl || 'https://api.openai.com/v1',
   };
 
