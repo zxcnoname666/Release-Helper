@@ -108,6 +108,7 @@ export async function generateAIChangelog(
             {
               commits: context.commits.map(c => c.commit),
               parsedCommits: context.commits,
+              versionInfo: context.versionInfo,
             }
           );
 
