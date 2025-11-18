@@ -9,14 +9,18 @@ import { generateToolsDescription } from './ai-tools.js';
 /**
  * Generate system prompt for AI
  */
-export function generateSystemPrompt(): string {
+export function generateSystemPrompt(language: string = 'en'): string {
+  const languageInstruction = language !== 'en'
+    ? `\n\n## LANGUAGE REQUIREMENT\n\n⚠️ CRITICAL: Generate the ENTIRE changelog in **${language}** language from the start.\n- Write all descriptions, explanations, and text in ${language}\n- Keep technical details in original form (commit hashes, usernames, file names, URLs)\n- Translate commit subjects in the format: "translated subject [hash] by @author"\n- Do NOT write in English first and then translate - write directly in ${language}\n- Keep emojis and markdown formatting as-is\n`
+    : '';
+
   return `
 You are an expert technical writer specializing in creating clear, informative, and engaging release notes and changelogs.
 
 Your task is to analyze Git commits and generate a comprehensive changelog that helps users understand:
 - What changed in this release
 - Why it matters to them
-- Any breaking changes or important notes
+- Any breaking changes or important notes${languageInstruction}
 
 ## Core Workflow (IMPORTANT)
 
@@ -43,6 +47,8 @@ For each category (feat, fix, ci, etc.):
 ### Example Structure:
 
 \`\`\`markdown
+---
+
 ## 🚀 Features
 
 ### Authentication System Overhaul
@@ -60,6 +66,8 @@ Key improvements:
 - refactor: migrate session storage to Redis [c3d4e5f] by @mary
 - fix: resolve token race condition [d4e5f6g] by @john
 
+---
+
 ## 🐛 Bug Fixes
 
 ### Critical Memory Leak Resolution
@@ -69,6 +77,8 @@ We discovered a memory leak in the WebSocket handler that caused server crashes 
 **Related commits:**
 - fix: cleanup WebSocket listeners on disconnect [g7h8i9j] by @eve
 - fix: add memory monitoring alerts [h8i9j0k] by @eve
+
+---
 
 ## 👷 CI
 
@@ -81,6 +91,8 @@ We improved the CI/CD pipeline by adding Docker support and Kubernetes deploymen
 - ci: fix Docker build issues [def456] by @dev1
 - ci: add Kubernetes manifests [ghi789] by @dev2
 \`\`\`
+
+**IMPORTANT**: Always add \`---\` (horizontal rule) BEFORE each category section (Features, Bug Fixes, CI, etc.)
 
 ### CRITICAL - Commit List Format:
 
@@ -128,6 +140,16 @@ We improved the CI/CD pipeline by adding Docker support and Kubernetes deploymen
 ${generateToolsDescription()}
 
 Important: If you need more information about specific commits, use the tools provided. You can make multiple tool requests before generating the final changelog.
+
+## Output Format
+
+ALWAYS include \`---\` (horizontal rule) BEFORE each category section:
+- Before ## 🚀 Features
+- Before ## 🐛 Bug Fixes
+- Before ## 👷 CI
+- Before any other category
+
+This creates visual separation between different types of changes.
 `.trim();
 }
 
@@ -216,6 +238,8 @@ For each category (Features, Bug Fixes, etc.):
 ### Required Structure:
 
 \`\`\`markdown
+---
+
 ## 🚀 Features
 
 ### [Semantic Block Title - What Was Achieved]
@@ -226,6 +250,8 @@ For each category (Features, Bug Fixes, etc.):
 - commit subject [hash] by @author
 - commit subject [hash] by @author
 
+---
+
 ## 🐛 Bug Fixes
 
 ### [Bug Description and Resolution]
@@ -235,6 +261,8 @@ For each category (Features, Bug Fixes, etc.):
 **Related commits:**
 - commit subject [hash] by @author
 \`\`\`
+
+**CRITICAL**: Always add \`---\` (horizontal rule) BEFORE each category (Features, Bug Fixes, CI, etc.)
 
 ### CRITICAL - NO Individual Commit Descriptions!
 
@@ -300,22 +328,23 @@ GitHub's matrix strategy with caching.
 
 The changelog should tell the story of what was built/fixed, not describe each commit separately.
 
-${language !== 'en' ? `
-## IMPORTANT: Translation Required
+## Output Format Requirements
 
-After generating the complete changelog in English, translate the ENTIRE changelog to **${language}** language while:
-1. **Preserving ALL markdown formatting** (headers, lists, links, code blocks, etc.)
-2. **Keeping ALL technical details intact** (commit hashes, usernames, file names, code snippets)
-3. **Maintaining the exact commit format**: "subject [hash] by @author" (translate only the subject part)
-4. **Translating descriptive text and explanations naturally**
-5. **Keeping emojis and special characters as-is**
+1. **Always add \`---\` before each category section** (Features, Bug Fixes, CI, etc.)
+2. This creates visual separation between different types of changes${language !== 'en' ? `
 
-Example translation for Russian (ru):
-- English: "Add new authentication feature [a1b2c3d] by @john"
-- Russian: "Добавить новую функцию аутентификации [a1b2c3d] by @john"
+## LANGUAGE REQUIREMENT
 
-Translate everything except: commit hashes, GitHub usernames (keep @username), URLs, code blocks, and technical identifiers.
-` : ''}
+⚠️ CRITICAL: Write the ENTIRE changelog in **${language}** language directly.
+- Do NOT write in English first
+- Write all descriptions and explanations directly in ${language}
+- Translate commit subjects: "translated subject [hash] by @author"
+- Keep technical details unchanged (hashes, usernames, URLs, code)
+- Keep emojis and markdown formatting as-is
+
+Example for Russian (ru):
+- Original commit: "feat: add OAuth2 [a1b2c3d] by @john"
+- In changelog: "добавить OAuth2 [a1b2c3d] by @john"` : ''}
 `.trim();
 }
 
